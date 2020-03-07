@@ -11,6 +11,11 @@ export default function App() {
     { text: 'Create an app', key: '2' },
     { text: 'Play on the switch', key: '3' },
   ])
+  const [inputText, setInputText] = useState('')
+
+  function onChangeText(value) {
+    setInputText(value)
+  }
 
   function pressHandler(key) {
     setTodos(prevTodos => {
@@ -23,6 +28,7 @@ export default function App() {
       setTodos(prevTodos => {
         return [{ text: text, key: Math.random().toString() }, ...prevTodos]
       })
+      setInputText('')
     } else {
       Alert.alert('Oops!', 'Todo must be over 3 chars long.', [
         { text: 'Understood', onPress: () => console.log('alert closed') },
@@ -35,7 +41,11 @@ export default function App() {
       <View style={styles.container}>
         <Header />
         <View style={styles.content}>
-          <AddTodo submitHandler={submitHandler} />
+          <AddTodo
+            inputText={inputText}
+            onChangeText={onChangeText}
+            submitHandler={submitHandler}
+          />
           <View style={styles.list}>
             <FlatList
               data={todos}
@@ -56,11 +66,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   content: {
-    padding: 40,
     flex: 1,
   },
   list: {
-    marginTop: 20,
     flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: 16,
   },
 })
